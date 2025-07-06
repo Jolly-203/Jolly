@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Story Outline</title>
+    
+    <!-- Google Fonts: Montserrat & a "handwriting" font for effect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        :root {
+            --box-color: #FFF6E3;
+            --paper-bg: #fdfdf8;
+            --primary-color: #CDC1FF;
+            --primary-color-dark: #b8aee8;
+            --secondary-color: #BFECFF;
+            --focus-glow-color: #FFCCEA;
+            --text-color: #3d3d3d;
+            --border-color: #e2e8f0;
+            --placeholder-color: #a0aec0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --line-height: 1.8rem;
+            --line-color: rgba(100, 150, 255, 0.3);
+            --margin-line-color: rgba(255, 150, 150, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            min-height: 100vh;
+            line-height: var(--line-height);
+            background-color: var(--paper-bg);
+            background-image: 
+                linear-gradient(to right, transparent 59px, var(--margin-line-color) 59px, var(--margin-line-color) 61px, transparent 61px),
+                repeating-linear-gradient(var(--paper-bg), var(--paper-bg) calc(var(--line-height) - 1px), var(--line-color) calc(var(--line-height) - 1px), var(--line-color) var(--line-height));
+            background-attachment: local;
+            position: relative; /* Needed for z-index context */
+            overflow-x: hidden; /* Prevent horizontal scroll from icons */
+        }
+
+        /* --- BACKGROUND ICONS CONTAINER --- */
+        .background-icons {
+            position: fixed; /* Fixed position so it stays on screen */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Puts it behind everything */
+            overflow: hidden;
+        }
+
+        .background-icons i {
+            position: absolute;
+            color: rgba(0, 0, 0, 0.08); /* Very faint color */
+            animation: spin-icon linear infinite;
+        }
+
+        /* Individual icon positioning and animation timing */
+        .background-icons i:nth-child(1) { top: 10%; left: 15%; font-size: 4rem; animation-duration: 25s; }
+        .background-icons i:nth-child(2) { top: 20%; left: 80%; font-size: 5rem; animation-duration: 18s; animation-direction: reverse; }
+        .background-icons i:nth-child(3) { top: 75%; left: 10%; font-size: 6rem; animation-duration: 30s; }
+        .background-icons i:nth-child(4) { top: 80%; left: 90%; font-size: 3rem; animation-duration: 22s; animation-direction: reverse; }
+        .background-icons i:nth-child(5) { top: 45%; left: 45%; font-size: 5rem; animation-duration: 28s; }
+        .background-icons i:nth-child(6) { top: 5%; left: 50%; font-size: 3.5rem; animation-duration: 20s; }
+        .background-icons i:nth-child(7) { top: 90%; left: 60%; font-size: 4.5rem; animation-duration: 35s; animation-direction: reverse; }
+
+
+        /* This is now the solid box on top of the paper background */
+        .notebook-wrapper {
+            width: 100%;
+            max-width: 850px;
+            background-color: var(--box-color);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 40px;
+            border: 1px solid #e2d9c2;
+            line-height: 1.6;
+            z-index: 1; /* Make sure this is on top of the background */
+            position: relative; /* Establish stacking context */
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #777;
+        }
+
+        .form-group label .fa-solid {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #f9faff; 
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--placeholder-color);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px color-mix(in srgb, var(--focus-glow-color) 40%, transparent);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            width: 100%;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            box-shadow: 0 4px 14px color-mix(in srgb, var(--primary-color) 40%, transparent);
+        }
+        
+        .button:hover { transform: translateY(-2px); }
+        .btn-primary:hover {
+             background-color: var(--primary-color-dark);
+             box-shadow: 0 6px 16px color-mix(in srgb, var(--primary-color) 60%, transparent);
+        }
+        .button:active { transform: translateY(0); }
+
+        .output-container {
+            margin-top: 30px;
+            background-color: #fafbff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 100px;
+            position: relative;
+        }
+        
+        .output-container h3 {
+             color: var(--primary-color-dark);
+             margin-bottom: 15px;
+             font-weight: 600;
+        }
+
+        #aiOutput {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Kalam', cursive;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .loader {
+            border: 5px solid color-mix(in srgb, var(--secondary-color) 30%, transparent);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        
+        /* The loader animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- THE NEW ICON ROTATION ANIMATION --- */
+        @keyframes spin-icon {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This new div contains the background icons -->
+    <div class="background-icons">
+        <i class="fas fa-pencil-alt"></i>  <!-- Bút chì (Học tập/Artist) -->
+        <i class="fas fa-palette"></i>      <!-- Bảng màu (Artist) -->
+        <i class="fas fa-book-open"></i>    <!-- Sách (Học tập) -->
+        <i class="fas fa-lightbulb"></i>    <!-- Bóng đèn (Ý tưởng) -->
+        <i class="fas fa-music"></i>        <!-- Nốt nhạc (Artist) -->
+        <i class="fas fa-brush"></i>        <!-- Cọ vẽ (Artist) -->
+        <i class="fas fa-graduation-cap"></i><!-- Mũ tốt nghiệp (Học tập) -->
+    </div>
+
+
+    <div class="notebook-wrapper">
+        <main>
+            <header>
+                <h1>AI Story Outline</h1>
+                <p>Enter your ideas, and the AI will build a detailed outline for you.</p>
+            </header>
+
+            <form id="storyForm">
+                <!-- Form content remains the same -->
+                <div class="form-group">
+                    <label for="genre"><i class="fa-solid fa-book-open"></i> Genre</label>
+                    <input type="text" id="genre" placeholder="e.g., Cozy Fantasy, Science Fiction, Slice-of-Life...">
+                </div>
+                <div class="form-group">
+                    <label for="character"><i class="fa-solid fa-user-pen"></i> Main Character</label>
+                    <textarea id="character" placeholder="e.g., Elara, a young librarian who discovers a magical book that writes itself..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="setting"><i class="fa-solid fa-map-marked-alt"></i> Setting</label>
+                    <textarea id="setting" placeholder="e.g., A quiet, misty coastal town where time seems to slow down..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="plot"><i class="fa-solid fa-bolt"></i> Central Conflict / Plot Idea</label>
+                    <textarea id="plot" placeholder="e.g., Elara must protect the magical book from a shadowy organization..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tone"><i class="fa-solid fa-palette"></i> Story Tone</label>
+                    <input type="text" id="tone" placeholder="e.g., Whimsical and heartwarming, Tense and mysterious...">
+                </div>
+                 <div class="form-group">
+                    <label for="fictionLevel"><i class="fa-solid fa-ruler-combined"></i> Fiction Level</label>
+                    <input type="text" id="fictionLevel" placeholder="e.g., Strictly realistic content and true-to-life situations.">
+                </div>
+                 <div class="form-group">
+                    <label for="humorLevel"><i class="fa-solid fa-face-smile"></i> Humor Level</label>
+                    <input type="text" id="humorLevel" placeholder="e.g., Highly Serious: no humorous elements or jokes.">
+                </div>
+            </form>
+
+            <button id="generateBtn" class="button btn-primary">Generate Outline with AI</button>
+
+            <div class="output-container">
+                <h3>AI Output</h3>
+                <div class="loader" id="loader"></div>
+                <div id="aiOutput">Your outline will appear here...</div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Script content remains the same
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = {
+                genre: document.getElementById('genre'),
+                character: document.getElementById('character'),
+                setting: document.getElementById('setting'),
+                plot: document.getElementById('plot'),
+                tone: document.getElementById('tone'),
+                fictionLevel: document.getElementById('fictionLevel'),
+                humorLevel: document.getElementById('humorLevel'),
+            };
+            const generateBtn = document.getElementById('generateBtn');
+            const aiOutputEl = document.getElementById('aiOutput');
+            const loader = document.getElementById('loader');
+
+            const API_KEY = 'YOUR_API_KEY_HERE'; // Remember to replace this and secure it!
+            const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
+            
+            const promptTemplate = `Act as a professional screenwriter. Create a detailed story outline based on the following details:
+
+- **Genre:** {genre}
+- **Main Character:** {character}
+- **Setting:** {setting}
+- **Central Conflict:** {plot}
+- **Tone:** {tone}
+- **Fiction Level:** {fictionLevel}
+- **Humor Level:** {humorLevel}
+
+The outline must follow the classic Three-Act Structure:
+- **Act I: The Setup** - Introduce the characters, the world, and the Inciting Incident.
+- **Act II: The Confrontation** - Rising action, escalating stakes, the Midpoint, and the "All is Lost" moment.
+- **Act III: The Resolution** - The Climax and the Final Resolution.
+
+Present the outline in a clear, coherent, and inspiring manner.`;
+
+            const handleGenerate = async () => {
+                let finalPrompt = promptTemplate;
+                for (const key in inputs) {
+                    const placeholder = `{${key}}`;
+                    const value = inputs[key].value.trim() || `[Not provided by user]`;
+                    finalPrompt = finalPrompt.replace(new RegExp(placeholder, 'g'), value);
+                }
+
+                loader.style.display = 'block';
+                aiOutputEl.textContent = '';
+                generateBtn.disabled = true;
+                generateBtn.textContent = 'Processing...';
+
+                try {
+                    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', },
+                        body: JSON.stringify({ "contents": [{ "parts": [{ "text": finalPrompt }] }] })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`API Error: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
+                    }
+
+                    const data = await response.json();
+                    const aiText = data.candidates[0].content.parts[0].text;
+                    aiOutputEl.textContent = aiText;
+
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error);
+                    aiOutputEl.textContent = `An error occurred: ${error.message}\n\nPlease check your API Key and network connection. Also, ensure the API is enabled in your Google Cloud project.`;
+                } finally {
+                    loader.style.display = 'none';
+                    generateBtn.disabled = false;
+                    generateBtn.textContent = 'Generate Outline with AI';
+                }
+            };
+            
+            generateBtn.addEventListener('click', handleGenerate);
+        });
+    </script>
+
+</body>
+</html>
